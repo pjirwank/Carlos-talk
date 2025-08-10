@@ -1,0 +1,627 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% PACKAGES %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{psfrag}
+\usepackage{amsmath}
+\usepackage{lipsum}
+\usepackage{mathtools}
+\usepackage{ifthen}
+\usepackage{verbatim}
+\usepackage{calc}
+%\usepackage{multimedia}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage{graphics,graphicx,amssymb}
+\usepackage{amsxtra}
+\usepackage{epsfig}
+\usepackage{subfigure}
+%\usepackage{movie15}
+%\usepackage{media9}
+\usepackage{multimedia}
+\usepackage{pdfpages}
+\usepackage{pgfpages}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usetikzlibrary{mindmap,trees,backgrounds}
+\usepackage[crop=pdfcrop]{pstool}
+\usepackage{pgflibraryshapes}
+%\usepackage{beamerthemesplit}
+\usepackage{wrapfig}
+\usepackage{mdframed}
+\usepackage{setspace}
+\usepackage{tcolorbox}
+\usepackage[normalem]{ulem}
+\usepackage[absolute, overlay]{textpos}
+\usepackage{ulem}
+%\usepackage{wasysym}
+\usepackage{multirow}
+\usepackage{tcolorbox}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% MACROS %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{etoolbox}
+\setbeamertemplate{theorems}[numbered]
+\undef{\lemma}
+\undef{\example}
+\undef{\proposition}
+\undef{\corollary}
+\undef{\assumption}
+\undef{\definition}
+\undef{\conjecture}
+\newtheorem{lemma}{\translate{Lemma}}
+\newtheorem{proposition}{\translate{Proposition}}
+%\theoremstyle{example}
+\newtheorem{example}{\translate{Example}}
+\newtheorem{corollary}{\translate{Corollary}}
+\newtheorem{assumption}{\translate{Assumption}}
+\newtheorem{definition}{\translate{Definition}}
+\newtheorem{conjecture}{\translate{Conjecture}}
+
+%\setbeamertemplate{theorem}[ams style]
+%\setbeamertemplate{theorems}[numbered]
+%%
+%\newtheorem{helpproposition}[theorem]{Proposition}     
+%\newenvironment{proposition}     
+%{\vskip.1cm\begin{helpproposition}\it}     
+%{\end{helpproposition}\vskip.1cm}     
+%%
+%\newtheorem{helpexample}[theorem]{Example}     
+%\renewenvironment{example}     
+%{\vskip.1cm\begin{helpexample}\it}     
+%{\end{helpexample}\vskip.1cm}     
+%%
+%\newtheorem{helpassumption}[theorem]{Assumption}     
+%\newenvironment{assumption}     
+%{\vskip.1cm\begin{helpassumption}\it}     
+%{\end{helpassumption}\vskip.1cm}     
+
+%\setbeamertemplate{proposition}[ams style]
+%\setbeamertemplate{propositions}[numbered]
+%\setbeamertemplate{example}[ams style]
+%\setbeamertemplate{examples}[numbered]
+
+%\newenvironment{example*}
+%  {\addtocounter{theorem}{-1}\example}
+%  {\endexample}
+%\newenvironment{proposition}
+%  {\addtocounter{theorem}{-1}\proposition}
+%  {\endexample}
+%\newenvironment{assumption*}
+%  {\addtocounter{theorem}{-1}\assumption}
+%  {\endexample}
+
+
+%\newtheorem{helptheorem}{Theorem}[section]     
+%\newtheorem{helpproposition}[helptheorem]{Proposition}     
+%\newenvironment{proposition}     
+%{\vskip.1cm\begin{helpproposition}\it}     
+%{\end{helpproposition}\vskip.1cm}     
+%\newtheorem{helpassumption}[helptheorem]{Assumption}
+%\newenvironment{assumption}
+%{\vskip.1cm\begin{helpassumption}}     
+%{\end{helpassumption}\vskip.1cm}
+
+
+\usepackage{rgsMacros}
+\usepackage{rgsBeamerv01}
+%\definecolor{mygreen}{RGB}{0,128,0}
+
+\renewcommand{\em}{\it \color{blue}}
+
+\definecolor{lightblue}{RGB}{60,60,200}
+\definecolor{mygreen}{RGB}{0,128,0}
+\definecolor{catch}{RGB}{0,128,0}
+\definecolor{throw}{RGB}{0,0,255}
+\definecolor{recovery}{RGB}{255,0,0}
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+
+\setbeamercolor{block title}{bg= lightblue!10!white}
+\setbeamercolor{block body}{bg= lightblue!5!white}
+\setbeamercolor{block title alerted}{bg=blue!10!white}
+\setbeamercolor{block body alerted}{bg=blue!3!white}
+\setbeamerfont{block title}{size={}}
+
+
+\renewcommand{\comment}[1]{\vspace{1in}{\color{red}\noindent \tt \tiny #1}}
+\newcommand{\BAn}[1]{{\cal B}_{#1}}
+\newcommand{\B}{{\cal B}}
+\renewcommand{\S}{{\cal S}}
+\newcommand{\E}{{\cal E}}
+\renewcommand{\P}{{\cal P}}
+% \renewcommand{\Q}{{\cal Q}}
+% \renewcommand{\K}{{\cal K}}
+
+\newcommand{\Ir}{{\cal I}(r)}
+\newcommand{\Irzero}{{\cal I}(0)}
+
+\newcommand{\putat}[3]{\begin{picture}(0,0)(0,0)\put(#1,#2){#3}\end{picture}} % just a shorthand
+\renewcommand{\U}{{\cal U}}
+% \newcommand{\V}{{\cal V}}
+
+\newcommand{\tb}{T}
+\newcommand{\ton}{x_1}
+\newcommand{\ttw}{x_2}
+
+\newcommand{\light}[1]{\textcolor{gray}{#1}}
+\newcommand{\Id}{I}
+\newcommand{\ep}{{\varepsilon}}
+\newcommand{\Tc}{T_u}
+\newcommand{\Ts}{T_s}
+\newcommand{\tauc}{\tau_u}
+\newcommand{\taus}{\tau_s}
+\newcommand{\lambdac}{\lambda_u}
+\newcommand{\lambdas}{\lambda_s}
+%\newcommand{\V}{{\reals^{n_P}}}
+%\renewcommand{\K}{{\cal K}}
+\newcommand{\diag}{\mathop{\mbox{diag}}\nolimits}
+\newcommand{\he}{\mathop{\mbox{He}}\nolimits}
+\newcommand{\wt}{\widetilde}
+\renewcommand{\T}{\mathop{\cal T}\nolimits}
+%\newcommand{\W}{\mathcal{W}}
+%%%% FOR TIKZ PICTURE
+
+%\usepackage{tikz}
+%\usetikzlibrary{mindmap,trees}
+%
+%\tikzset{level 1 concept/.append style={font=\sf, sibling angle=90,level distance = 27mm}}
+%\tikzset{level 2 concept/.append style={font=\sf, sibling angle=45,level distance = 17mm}}
+%%\tikzset{every node/.append style={scale=1}}    
+%\tikzset{every node/.append style={scale=0.6}}    
+%
+%%% ADDED TO MATCH MARCELLO's TKIZ command
+%\tikzstyle{block} = [draw, fill=blue!20, rectangle, 
+%    minimum height=3em, minimum width=6em]
+%\tikzstyle{sum} = [draw, fill=blue!20, circle, node distance=1cm]
+%\tikzstyle{input} = [coordinate]
+%\tikzstyle{output} = [coordinate]
+%\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% SETTINGS %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usetheme{rgsv02nopic}
+%\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm] 
+
+
+%\graphicspath{{Figures/}}
+
+%\makeatletter
+%\def\input@path{{/Users/Ricardo/GoogleDrive/PyTexLibrary/WorkshopCDC19/BerkAltin/Figures/}}
+%\makeatother
+
+\def\cmd#1{\texttt{\textbackslash #1}}
+\def\env#1{\texttt{#1}}
+
+%%%%%%%%%%% TableOfContents Style %%%%%%%%%%%%%%%%%%
+
+\setbeamertemplate{section in toc}{%
+	\bf \large {\color{red} \inserttocsectionnumber.}~\inserttocsection}
+\setbeamercolor{subsection in toc}{bg=white,fg=structure}
+\setbeamertemplate{subsection in toc}{%
+	\vspace{3mm} \hspace{5mm} {\color{applegreen} $\blacktriangleright$}~\inserttocsubsection\par}
+
+%\setbeamertemplate{navigation symbols}{}
+\setwhitesheetcolors
+
+% COMMENT OUT TO SHOW LABELS
+%\usepackage[inline]{showlabels}
+
+% Rafal commands
+\newcommand{\Sol}{{\cal S}}
+\newcommand{\length}{\mathop{\rm length}}
+\newcommand{\Length}{\mathop{\rm Length}}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\ds}{\displaystyle} 
+\newcommand{\BPA}{\mathcal{B}(\A)}
+\newcommand{\sola}{\psi}
+\newcommand{\limtj}{\lim_{t+j\to\infty}}
+\newcommand{\limtk}{\lim_{t+k\to\infty}}
+% \renewcommand{\sol}{\phi}
+
+%% Hybrid control commands
+
+%% plant system
+\newcommand{\HSp}{\HS_P}
+%% plant's state
+\newcommand{\xp}{z}
+\newcommand{\zp}{z_p}
+\newcommand{\zpdot}{\dot{z}_p}
+%%
+\newcommand{\xpdot}{\dot{\xp}}
+%%
+\newcommand{\xpddot}{\ddot{\xp}}
+%% plant's input
+\newcommand{\up}{u}
+%% plant's output
+\newcommand{\yp}{y}
+%% plant's right-hand side
+\newcommand{\fp}{F_P}
+\newcommand{\gp}{G_P}
+\newcommand{\Cp}{C_P}
+\newcommand{\olCp}{\overline{C}_P}
+\newcommand{\Dp}{D_P}
+%% plant's output function
+\newcommand{\hp}{h}
+%% plant's input space
+\newcommand{\upSpace}{{\cal U}_P}
+%% plant's state space
+\newcommand{\xpSpace}{{\cal X}_P}
+%% plant's output space
+\newcommand{\ypSpace}{{\cal Y}_P}
+%% controller system
+% \renewcommand{\HSc}{\HS_K}
+%% controller's state
+\newcommand{\xc}{\eta}
+%%
+\newcommand{\xcdot}{\dot{\xc}}
+%%
+\newcommand{\xcddot}{\ddot{\xc}}
+%% controller's input
+\newcommand{\uc}{v}
+%% controller's output
+\newcommand{\yc}{\zeta}
+%% controller's right-hand side
+\newcommand{\fc}{F_K}
+\newcommand{\gc}{G_K}
+%% controller's output function
+\newcommand{\hc}{\kappa}
+\newcommand{\Cc}{C_K}
+\newcommand{\Dc}{D_K}
+%% controller's input space
+\newcommand{\ucSpace}{{\cal U}_K}
+%% controller's state space
+\newcommand{\xcSpace}{{\cal X}_K}
+%% logic state
+\newcommand{\xlogic}{q}
+\newcommand{\xlogicdot}{\dot{\xlogic}}
+\newcommand{\xlogicSpace}{Q}
+%\newcommand{\xcSpace}{\Upsilon}
+%\newcommand{\ucSpace}{{\cal V}}
+
+%% timer state
+\newcommand{\xtimer}{\tau}
+\newcommand{\xtimerdot}{\dot{\xtimer}}
+\newcommand{\xtimerp}{T^*}
+\newcommand{\xtimerSpace}{[0,\xtimerp]}
+
+%% memory state
+\newcommand{\xmem}{\ell}
+\newcommand{\xmemdot}{\dot{\xmem}}
+
+%$ measurement noise
+\newcommand{\m}{m}
+
+%% closed loop's state
+\newcommand{\x}{x}
+% \renewcommand{\xdot}{\dot{x}}
+%% closed-loop's right-hand side
+\newcommand{\f}{F}
+% \newcommand{\g}{G}
+\renewcommand{\C}{C}
+\newcommand{\olC}{\overline{C}}
+\renewcommand{\D}{D}
+%% plant's state space
+\newcommand{\xSpace}{{\cal X}}
+% \newcommand{\h}{h}
+
+
+%%Logic-based control
+\newcommand{\HScq}{\HS_{K,q}}
+\newcommand{\xcq}{\xc_q}
+\newcommand{\xcdotq}{\dot{\xc}_q}
+%% controller's input
+\newcommand{\ucq}{v_q}
+%% controller's output
+\newcommand{\ycq}{\zeta_q}
+%% controller's right-hand side
+\newcommand{\fcq}{F_{K,q}}
+\newcommand{\gcq}{G_{K,q}}
+%% controller's output function
+\newcommand{\hcq}{\kappa_q}
+\newcommand{\Ccq}{C_{K,q}}
+\newcommand{\Dcq}{D_{K,q}}
+\newcommand{\ucSpaceq}{{\cal U}_{K,q}}
+%% controller's state space
+\newcommand{\xcSpaceq}{{\cal X}_{K,q}}
+
+%Supervisor System
+\newcommand{\HSs}{\HS_{S}}
+\newcommand{\Cs}{C_S}
+\newcommand{\Ds}{D_S}
+\newcommand{\Csq}{C_{S,q}}
+\newcommand{\Dsq}{D_{S,q}}
+\newcommand{\gs}{G_{S}}
+\newcommand{\us}{v_{S}}
+
+% Jun's command
+\definecolor{lightred}{RGB}{255,100,100}% red
+\definecolor{mediumorchid}{RGB}{186,85,211} % purple
+\definecolor{orange}{RGB}{255,165,0}% orange
+%\newcommand*{\hlw}[1]{
+%	\tikz[baseline=(X.base)] \node[rectangle, fill=white] (X) {#1};
+%}
+%\newcommand{\ifeq}{\text{\normalfont if }}
+%\newcommand{\jref}[1]{{\color{lightblue}{#1}}}
+%\newcommand{\chai}[1]{{\color{mediumorchid}{#1}}}
+%\newcommand{\jun}[1]{{\color{orange}{#1}}}
+%\newcommand{\JC}[1]{{\color{mygreen}{#1}}}
+%\newcommand{\FI}[1]{{\color{mediumorchid}{#1}}}
+%\newcommand{\flow}[1]{{\color{blue}{#1}}}
+%\newcommand{\jump}[1]{{\color{red}{#1}}}
+%\newcommand{\otherw}{\text{\normalfont otherwise}}
+\newcommand{\sg}{\text{\normalfont\scriptsize g}}
+\newcommand{\sfw}{\text{\normalfont\scriptsize fw}}
+\newcommand{\sS}{\text{\normalfont\scriptsize s}}
+\renewcommand{\M}{{\cal M}_r} % comflict with RGS command
+\newcommand{\Lc}{\Theta_c}
+\newcommand{\Ld}{\Theta_d}
+\newcommand{\wLc}{\widetilde{\Theta}_c}
+\newcommand{\wLd}{\widetilde{\Theta}_d}
+\newcommand{\rc}{\rho_c}
+\newcommand{\rd}{\rho_d}
+\newcommand{\Lstar}{\Theta_\star}
+\newcommand{\wLstar}{\widetilde{\Theta}_\star}
+\newcommand{\mc}{\reals^n \times {\cal U}_c}
+\newcommand{\md}{\reals^n \times {\cal U}_d}
+%\newcommand{\inter}{\text{\normalfont int }}
+\newcommand{\Hcl}{\HS}%{\HS_{cl}}
+\newcommand{\Ccl}{C}%{C_{cl}}
+\newcommand{\Fcl}{F}%{F_{cl}}
+\newcommand{\Dcl}{D}%{D_{cl}}
+\newcommand{\Gcl}{G}%{G_{cl}}
+
+%%Passivity Talk Commands
+\def\ba{\begin{array}}
+\def\ea{\end{array}}
+\def\be{\begin{equation}}
+\def\ee{\end{equation}}
+\def\fraz{\dst\frac}
+\def\qmxr#1{\left (\begin{matrix} #1\end{matrix}\right )}
+\def\qmxq#1{\left [\begin{matrix} #1\end{matrix}\right ]}
+\def\qmx#1{\left (\begin{matrix} #1\end{matrix}\right )}
+\def\parder#1_#2{\fraz{\partial #1}{\partial #2}}
+\def\pardertr#1_#2{\fraz{\partial\tr #1}{\partial #2}}
+\def\unmezzo{\fraz{1}{2}}
+%%
+\def\HSZero{\mathcal{H}_0}
+\def\u{v}
+
+\def\uflow{u_c}
+\def\uflowTwo{\tilde{u}_c}
+\def\uflowmap{u_c}
+\def\uflowset{u_c}
+
+\def\ujump{u_d}
+\def\ujumpTwo{\tilde{u}_d}
+\def\ujumpmap{u_d}
+\def\ujumpset{u_d}
+
+\def\yflow{y_c}
+\def\yflowmap{y}
+\def\yflowset{y}
+
+\def\yjump{y_d}
+\def\yjumpmap{y}
+\def\yjumpset{y}
+
+\def\restcoefficent{\varrho}
+\def\restcoefficentBall{e_c}
+%OLD
+\def\uFlowSupply{u^\top \Gamma_c^\top}
+\def\uJumpSupply{u^\top \Gamma_d^\top}
+
+\def\yFlowSupply{\Phi_c h(x,\u)}
+\def\yJumpSupply{\Phi_d h(x,\u)}
+\def\SupplyOutputFlow{y^\top \Phi_c^\top \Phi_c \rho_c(y)}
+\def\SupplyOutputJump{y^\top \Phi_d^\top \Phi_d \rho_d(y)}
+\def\SupplyOutputFlowZeroInput{h(x,0)^\top \Phi_c^\top \Phi_c \rho_c(h(x,0))}
+\def\SupplyOutputJumpZeroInput{h(x,0)^\top \Phi_d^\top \Phi_d \rho_d(h(x,0))}
+
+
+%POSSIBLE NEW:
+\def\uFlowSupply{u_c^\top}
+\def\uJumpSupply{u_d^\top}
+\def\yFlowSupply{y_c}
+\def\yJumpSupply{y_d}
+\def\SupplyOutputFlow{y_c^\top \rho_c(y_c)}
+\def\SupplyOutputJump{y_d^\top \rho_d(y_d)}
+\def\SupplyOutputFlowZeroInput{h_c(x,0)^\top \rho_c(h_c(x,0))}
+\def\SupplyOutputJumpZeroInput{h_d(x,0)^\top \rho_d(h_d(x,0))}
+
+
+
+
+\def\virtualInputTwo{\tilde{u}_c}
+\def\virtualInputThree{\hat{u}_c}
+
+
+%old F_c
+\def\FCompliant{f_{c}}
+
+
+%passivity based control:
+
+\def\kappac{\kappa_c}
+\def\kappad{\kappa_d}
+
+\def\startmodif{\color{magenta}}
+\def\stopmodif{\color{black}\normalcolor}
+\def\ricardo#1{\color{blue}#1\normalcolor}
+\def\roberto#1{\color{red}#1\normalcolor}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% FROM JUN
+
+\newcommand{\flow}[1]{{\color{blue}{#1}}}
+\newcommand{\jump}[1]{{\color{red}{#1}}}
+
+\newcommand{\FI}[1]{{\color{mygreen}{#1}}}
+\newcommand{\chai}[1]{{\color{mygreen}{#1}}}
+\newcommand{\JC}[1]{{\color{lightblue}{#1}}}
+\newcommand{\jun}[1]{{\color{purple}{#1}}}
+
+\newcommand{\ifeq}{\text{\normalfont if }}
+\newcommand{\otherw}{\text{\normalfont otherwise}}
+\newcommand{\inter}{\text{\normalfont int}}
+
+\newcommand{\data}{(C,F,D,G)}
+\newcommand{\z}{\x}
+\newcommand{\hu}{\hat{u}}
+\newcommand{\hy}{\hat{y}}
+\newcommand{\hF}{\hat{F}}
+
+\newcommand{\Nset}{\ricardo{\{1, 2, ... , N\}}}
+\newcommand{\Nsety}{\{1, 2, ... , N_y\}}
+\newcommand{\Nsetu}{\{1, 2, ... , N_u\}}
+\newcommand{\iy}{{i_y}}
+\newcommand{\iu}{{i_u}}
+\newcommand{\ET}{\gamma} %  triggering event symble
+\newcommand{\ETfy}{\gamma^y_\iy} % output triggering event
+\newcommand{\ETfu}{\gamma^u_\iu} % input triggering event
+\newcommand{\ETarg}{\xi}
+\newcommand{\gfy}{g^y_{\iy}}
+\newcommand{\gfu}{g^u_{\iu}}
+\newcommand{\jy}{j_y}
+\newcommand{\ju}{j_u}
+
+%letters
+\newcommand{\Cmc}{\mathcal{C}}
+\newcommand{\Dmc}{\mathcal{D}}
+\newcommand{\Lmc}{\mathcal{L}}
+\newcommand{\Bmc}{\mathcal{B}}
+\newcommand{\Xmc}{\mathcal{X}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Berk's stuff
+%\usepackage{tikz,circuitikz,tikz-cd,tikzscale}
+%\usetikzlibrary{shapes,arrows,calc,fit}
+
+%\usepackage{animate}
+
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=newest}
+%\usepgfplotslibrary{fillbetween}
+
+%\usepgfplotslibrary{external}
+%\tikzexternalize[prefix=tikz/]	%create folder named tikz
+
+%\def\Put(#1,#2)#3{\leavevmode\makebox(0,0){\put(#1,#2){#3}}}
+
+
+%Define tikz shapes
+%\tikzstyle{blocknone} = [draw=none,rectangle,minimum height=1.75em,minimum width=6em]
+%\tikzstyle{block} = [draw,rectangle,minimum height=1.75em,minimum width=6em]
+%\tikzstyle{systemblock} = [draw,rectangle,minimum height=1.75em,minimum width=3em]
+%\tikzstyle{flowblock} = [draw,rectangle,rounded corners,minimum height=3em,minimum width=20em]
+%\tikzstyle{gain} = [draw,rectangle,minimum height=1em,minimum width=1em]
+%\tikzstyle{sum} = [draw,circle,node distance=0.5cm]
+%\tikzstyle{signal} = [coordinate]
+%\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+%
+%\newcommand{\Anorm}[1]{\left|#1\right|_{\cal A}}
+%
+%\usepackage{algorithm,algpseudocode} % \usepackage for algorithm
+%
+%\newcommand{\flowcost}{L_c}
+%\newcommand{\jumpcost}{L_d}
+%%\newcommand{\kappac}{\kappa_c}
+%%\newcommand{\kappad}{\kappa_d}
+%\newcommand{\alphac}{\alpha_c}
+%\newcommand{\alphad}{\alpha_d}
+%\newcommand{\gammac}{\gamma_c}
+%\newcommand{\gammad}{\gamma_d}
+%\newcommand{\totalenergy}{W}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Parmita's stuff
+\usepackage{calc}
+
+\usepackage{listings}
+
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+
+\definecolor{mylilas}{RGB}{170,55,241}
+
+%\lstset{language=Matlab,
+%    %basicstyle=\color{red},
+%    breaklines=true,
+%    morekeywords={matlab2tikz},
+%    keywordstyle=\color{blue},
+%    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+%    identifierstyle=\color{black},
+%    stringstyle=\color{mylilas},
+%    commentstyle=\color{mygreen},
+%    showstringspaces=false,
+%    numbers=left,
+%    numberstyle={\tiny \color{black}},
+%    numbersep=9pt,
+%    emph=[1]{for,end,break},emphstyle=[1]\color{red},
+%}
+
+%% FROM MOHAMED
+%\usepackage{bm}
+%\newcommand\red[1]{{\color{red}#1}}
+%\newcommand{\bsym}[1]{\boldsymbol{#1}}
+%\newcommand{\mrm}[1]{\mathrm{#1}}
+%\renewcommand{\mc}[1]{\mathcal{#1}}
+%\newcommand{\mbb}[1]{\mathbb{#1}}
+%\newcommand{\munit}[1]{[\mathrm{#1}]}
+%
+%% FOR HYBRID MPC
+%
+%\newcommand{\F}{{\cal F}}     
+%\renewcommand{\L}{{\cal L}}     
+%\newcommand*{\tr}{^{\mkern-1.5mu\mathsf{T}}}
+%
+%%Francesco's stuff
+%\newcommand{\Js}{\mathcal{J}^\star}
+%\newcommand{\xh}{\hat{x}}
+%\newcommand{\He}{\operatorname{He}}
+%\newcommand*{\QEDB}{\hfill\ensuremath{\square}}%
+%\newcommand{\Sn}{\mathbb{S}^n} 
+%\newcommand{\SHO}{\mathcal{S}_{\HS}}
+%\newcommand{\CUD}{\overline{\C}\cup \D}
+%\newcommand{\limdom}{\lim_{\substack{(t, j)\in\dom\x\\(t, j)\rightarrow\sup\dom\x}}}
+%\newcommand{\limdomhat}{\lim_{\substack{(t, j)\in\dom\xh\\(t, j)\rightarrow\sup\dom\xh}}}
+%\newcommand{\Cone}{\mathbf{Cone}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% VERSION CONTROL COMMAND
+%%% For Conference, Change to "true"
+%%% For Report, Change to "false"
+\usepackage{ifthen}
+
+
+\newboolean{Inclusion}
+\setboolean{Inclusion}{false}
+%\newcommand{\IfInc}[2]{\ifthenelse{\boolean{Inclusion}}{ #1 #2}{#2}}
+%\newcommand{\IfIncd}[2]{\ifthenelse{\boolean{Inclusion}}{{#1}}{#2}}
+\newcommand{\IfInc}[2]{\ifthenelse{\boolean{Inclusion}}{ \color{cyan}#1\color{black}#2}{#2}}
+\newcommand{\IfIncd}[2]{\ifthenelse{\boolean{Inclusion}}{{\color{cyan}#1}}{#2}}
+
+\newboolean{Personal}
+\setboolean{Personal}{false}
+\newcommand{\IfPers}[1]{\ifthenelse{\boolean{Personal}}{{\color{purple}#1} }{}}
+
+
+\newboolean{Infinite-horizon} 
+\setboolean{Infinite-horizon}{true} %False:General framework. True: Only Infinite-horizon.
+\newcommand{\IfIh}[2]{\ifthenelse{\boolean{Infinite-horizon}}{#1}{{\color{purple}#2}}}
+
+\newboolean{Two-Players} 
+\setboolean{Two-Players}{true} %False:General framework. True: Only Two players formulation.
+\newcommand{\IfTp}[2]{\ifthenelse{\boolean{Infinite-horizon}}{#1}{{\color{purple}#2}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\tcbuselibrary{skins}
+
+\newtcolorbox{mybox}[1][]{before=\centering, hbox, drop fuzzy shadow, enhanced, colback=white, rounded corners, colframe=lightblue, fonttitle=\bfseries, title=#1, center title}
