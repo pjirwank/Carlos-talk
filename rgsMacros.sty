@@ -1,0 +1,108 @@
+%%%%% rgsMacros.sty %%%%% 
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\nats}{\mathbb{N}}
+      
+%\newtheorem{theorem}{Theorem}[section]      
+%\newtheorem{lemma}[theorem]{Lemma}      
+%\newtheorem{definition}[helptheorem]{Definition}     
+%\newtheorem{corollary}[theorem]{Corollary}      
+%\newtheorem{proposition}[theorem]{Proposition}      
+% \newtheorem{assumption}[theorem]{Assumption}      
+%\newtheorem{conjecture}[theorem]{Conjecture}      
+%\newtheorem{nexample}[theorem]{Example}       
+% \newtheorem{prob}{Problem}[section]
+      
+%\newenvironment{example}      
+%[1]{\begin{nnexample}{\rm (#1)}\textbf{.}\rm}      
+%{\end{nnexample}}      
+      
+%\newenvironment{nnexample}      
+%{\begin{nexample}\rm}{\end{nexample}}      
+      
+\newenvironment{proofSketch}      
+{\par\noindent\textbf{Sketch of Proof:}}{\eop\smallskip\vskip 3 pt}
+
+\newcommand{\eop}      
+           {\hspace*{\fill}{$\vcenter{\hrule height1pt       
+                     \hbox{\vrule width1pt height5pt       
+            \kern5pt \vrule width1pt} \hrule height1pt}$} }
+      
+\newtheorem{defi}{Definition}      
+%\newtheorem{remark}{Remark}       
+
+\definecolor{mygreen}{RGB}{0,128,0}
+\definecolor{mymagenta}{RGB}{255,0,255}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Following added by Piyush %%%
+
+\newcommand{\crit}[1]{\mathrm{crit \;} #1}
+
+\newcommand{\diffFunc}[1]{\mathrm{d}{#1}}
+\newcommand{\grad}[1]{\mathrm{grad}\:{#1}}
+\newcommand{\Hess}[3]{\mathrm{Hess \;}{#1}{#2}[#3]}
+\newcommand{\RieExp}[2]{\mathrm{Exp}_{#1}(#2)}
+\newcommand{\RieExpinv}[2]{\mathrm{Exp}^{-1}_{#1}(#2)}
+
+\newcommand{\M}{{\mathcal{M}}}
+\newcommand{\N}{{\mathcal{N}}}
+
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\VSOthree}{{\mathcal{V}_{\SOthree}}}
+\newcommand{\dom}{\mathrm{dom \:}}
+\newcommand{\SOtwo}{{\mathrm{SO}(2)}}
+\newcommand{\SOthree}{{\mathrm{SO}(3)}}
+\newcommand{\SOn}{{\mathbb{SO}(n)}}
+\newcommand{\RPthree}{\mathbb{RP}^3}
+\newcommand{\son}{\mathfrak{so}(n)}
+\newcommand{\sotwo}{\mathfrak{so}(2)}
+\newcommand{\sothree}{\mathfrak{so}(3)}
+\newcommand{\axis}[1]{\mathrm{axis}(#1)}
+\newcommand{\R}[1]{\mathbb{R}^{#1}}
+\newcommand{\dotR}{\dot{R}}
+\newcommand{\Omegay}{\Omega^y}
+\newcommand{\vex}[1]{\mathrm{vex}\left(#1\right)}
+\newcommand{\trace}[1]{\mathrm{tr}\left(#1\right)}
+\newcommand{\brackets}[1]{\left(#1\right)}
+\newcommand{\adjoint}[2]{\mathrm{Ad}_{#1}#2}
+\newcommand{\Rtilde}{\overline{R}} %%% Rtilde is Rbar
+\newcommand{\Rbar}{\widetilde{R}} %%% Rbar is Rtilde
+\newcommand{\Rhat}{\widehat{R}}
+\newcommand{\etabound}{\Bar{\eta}_w}
+\newcommand{\normSOthree}[2]{{{\vert}#2 {\vert}^{#1}_I}}
+\newcommand{\cross}[1]{{#1}_\times}
+\newcommand{\expo}[1]{e^{#1}}
+\newcommand{\frobenius}[2]{{\left\langle #1, #2 \right\rangle}_F}
+\newcommand{\frobnorm}[2]{\lvert #2\rvert^{#1}_F}
+\newcommand{\inprod}[2]{\langle #1, #2 \rangle}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\distfromA}[1]{|#1|_\A}
+\newcommand{\Rstar}{{R^*}}
+\newcommand{\noisegyro}{\eta}
+\newcommand{\maxnoisegyro}{{\overline{\eta}}}
+% \newcommand{\noiseatt}{\mathcal{N}}
+\newcommand{\noiseatt}{{N}}
+\newcommand{\maxnoiseatt}{\theta_R}
+\newcommand{\dualpairing}[2]{\langle\langle #1 , #2 \rangle\rangle}
+\newcommand{\T}[2]{\mathrm{T}_{#1}{#2}}
+\newcommand{\dual}[2]{\mathrm{T}^*_{#1}{#2}}
+\newcommand{\cobar}{\overline{c_0}}
+\newcommand{\neighbourhood}[2]{\mathcal{N}_{#1}(#2)}
+\newcommand{\noisevec}{\eta}
+\newcommand{\maxnoisevec}{\overline{\eta}}
+\newcommand{\bias}{\mathdutchcal{b}}
+\newcommand{\biasError}{\widetilde{\mathdutchcal{b}}}
+\newcommand{\biasHat}{\hat{\mathdutchcal{b}}}
+\newcommand{\quotes}[1]{``#1''}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+% \newcolumntype{L}{>{$}l<{$}}
+
+\newcommand{\C}{\mathfrak{C}}
+\newcommand{\D}{\mathfrak{D}}
+\newcommand{\normonX}[2]{{{\vert}#2 {\vert}^{#1}_{\widetilde{\A}}}}

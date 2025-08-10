@@ -1,0 +1,557 @@
+\pdfminorversion=6
+\pdfsuppresswarningpagegroup=1
+% PRESENTATION 
+\documentclass[aspectratio=169]{beamer}
+\errorcontextlines=9999
+% TO MAKE HANDOUT use
+%\documentclass[notes=hide,handout]{beamer}
+%\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm] 
+
+\definecolor{lightGray}{RGB}{230,230,230}
+
+\newcommand{\ExtraW}{20}
+\newcommand{\RaiseT}{15}
+
+% LOG
+% 08/17: added \usepackage{multirow}
+\input{macros/head}
+\usepackage{import}
+%
+%\usepackage{media9}
+%\usepackage{ocgx2}
+\usepackage{graphicx, epstopdf}
+\usepackage{graphbox}
+\usepackage{animate}
+%\graphicspath{{Clipart/Figures}}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{shadows}
+
+\tcbuselibrary{skins,breakable}
+
+\usepackage{bm}
+\usepackage{qrcode}
+\usepackage{soul}
+\usepackage{macros/definitions}
+% \usepackage{enumitem}
+
+\newcommand\cmark[1][]{%
+  \tikz[scale=0.4,#1]{\fill(0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}%
+}
+
+\newcommand\crossmark[1][]{%
+  \tikz[scale=0.4,#1]{
+    \fill(0,0)--(0.1,0) .. controls (0.5,0.4) .. (1,0.7)--(0.9,0.7) ..  controls (0.5,0.5) ..(0,0.1) --cycle;
+    \fill(1,0.1)--(0.9,0.1) .. controls (0.5,0.3) .. (0,0.7)--(0.1,0.7) .. controls (0.5,0.4) ..(1,0.2) --cycle;
+  }%
+}
+
+\newcommand{\imgwithmask}[6][white]{%
+  \begin{tikzpicture}
+    % place the image; width adapts to the surrounding box (\linewidth)
+    \node[inner sep=0, anchor=north west] (im) at (0,0)
+         {\includegraphics[width=\linewidth]{#2}};
+    % clip to the image bounds so the mask never spills outside
+    \begin{scope}
+      \clip (im.south west) rectangle (im.north east);
+      % rectangle: start at (top-left + UL-x right, UL-y down), then width x height
+      \fill[#1] ($(im.north west)+(#3,-#4)$) rectangle ++(#5,-#6);
+    \end{scope}
+  \end{tikzpicture}%
+}
+
+\setbeamertemplate{theorem}[numbered]                % use numbered theorems
+\setbeamerfont{theorem name}{series=\bfseries}       % make “Theorem” bold
+
+% Colors for corrections
+\newcommand{\pn}[1]{{\color{red}#1}}
+\newcommand{\pnn}[1]{{\color{violet} #1}}
+\newcommand{\pno}[1]{{\color{blue} #1}}
+\newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle #2$}}
+\newcommand{\hlc}[2][yellow]{{%
+    \colorlet{foo}{#1}%
+    \sethlcolor{foo}\hl{#2}}%
+}
+
+% \usepackage[backend=bibtex,style=authoryear]{biblatex}
+% \addbibresource{biblio.bib} % <-- your .bib
+
+% Beamer footnote w/o rule (do NOT load footmisc)
+\setbeamertemplate{footnote}{\parindent0pt\tiny\insertfootnotemark\ \insertfootnotetext\par}
+
+% Overlay-aware footnote citation
+\newcommand{\shortfootcite}[2][1-]{\footnote<#1>{\textcite{#2}}}
+
+
+
+\newcommand{\phantombox}[2]{\only<#1>{\vphantom{#2}}}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+
+\makeatletter
+}
+
+\usepackage{ragged2e}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage{xparse}
+% Define colors
+\definecolor{flows}{RGB}{41, 41, 98}
+\definecolor{jumps}{RGB}{238, 20, 30}
+\definecolor{epsC}{RGB}{67, 67, 205} % epsilon-net for (C \cap \cal U) \setminus \cal A
+\definecolor{epsD}{RGB}{243, 17, 26} % epsilon-net for (D \cap \cal U) \setminus \cal A
+
+\def\Put(#1,#2)#3{\leavevmode\makebox(0,0){\put(#1,#2){#3}}}
+
+% Remove prefix "Figure" in figures
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% ============================================
+% THEOREM ENVIRONMENTS
+% ============================================
+
+% --- Base brand colors (dark, good for title bars with white text) ---
+\definecolor{myblue}{HTML}{0B3D91}   % blue 600
+\definecolor{mygreen}{HTML}{047857}  % green 700
+\definecolor{myorange}{HTML}{B45309} % orange/brown 700
+\definecolor{mygray}{HTML}{334155}   % slate 700
+
+% Undefine the existing environments completely
+\makeatletter
+\let\definition\@undefined
+\let\enddefinition\@undefined
+
+\let\proposition\@undefined
+\let\endproposition\@undefined
+
+\let\corollary\@undefined
+\let\endcorollary\@undefined
+
+\let\theorem\@undefined
+\let\endtheorem\@undefined
+\let\lemma\@undefined
+\let\endlemma\@undefined
+\makeatother
+
+% Single shared counter for all theorem types
+\newcounter{thmcounter}
+\renewcommand{\thethmcounter}{\arabic{thmcounter}}
+
+% Helper function to create theorem environments
+% #1 = additional tcolorbox options (optional)
+% #2 = environment name (e.g., definition, theorem)
+% #3 = display name (e.g., Definition, Theorem)  
+% #4 = color (e.g., myblue, mygreen)
+
+% Method 1: Use overlay-aware counter
+\newcommand{\createtheoremenv}[4][]{%
+    \newenvironment{#2}[1][]{%
+        % Only increment counter on first overlay
+        \only<1>{\refstepcounter{thmcounter}}%
+        % Set itemize colors to match environment
+        \setbeamercolor{itemize item}{fg=#4}%
+        \setbeamercolor{itemize subitem}{fg=#4!70}%
+        \setbeamertemplate{itemize item}{\color{#4}$\blacktriangleright$}%
+        \setbeamertemplate{itemize subitem}{\color{#4!70}$\triangleright$}%
+        % Set enumerate colors
+        \setbeamercolor{enumerate item}{fg=#4}%
+        \setbeamercolor{enumerate subitem}{fg=#4!70}%
+        \setbeamertemplate{enumerate item}{\color{#4}\insertenumlabel.}%
+        \setbeamertemplate{enumerate subitem}{\color{#4!70}(\insertsubenumlabel)}%
+        % Check if optional title is provided
+        \ifx\relax##1\relax
+        \begin{tcolorbox}[
+            enhanced,
+            breakable,
+            colback=#4!5,
+            colframe=#4,
+            colbacktitle=#4,
+            coltitle=white,
+            attach boxed title to top left={yshift=-2mm,xshift=2mm},
+            boxed title style={sharp corners},
+            arc=1mm,
+            boxrule=1pt,
+            #1, % Additional options
+            title={#3 %\thethmcounter
+            }
+        ]
+        \else
+        \begin{tcolorbox}[
+                enhanced,
+                breakable,
+                colback=#4!5,
+                colframe=#4,
+                colbacktitle=#4,
+                coltitle=white,
+                attach boxed title to top left={yshift=-2mm,xshift=2mm},
+                boxed title style={sharp corners,text width=0.9\textwidth},
+                arc=1mm,
+                boxrule=1pt,
+                #1, % Additional options
+                title={#3: %\thethmcounter: 
+                ##1}
+            ]
+            \fi
+            }{%
+        \end{tcolorbox}%
+    }%
+}
+
+% Create all theorem environments using the helper function
+\createtheoremenv{definition}{Definition}{mygray}
+\createtheoremenv{theorem}{Theorem}{myblue}
+\createtheoremenv{lemma}{Lemma}{myblue}
+\createtheoremenv{proposition}{Proposition}{myblue}
+\createtheoremenv{corollary}{Corollary}{myblue}
+% \createtheoremenv{assumption}{Assumption}{myorange}
+\createtheoremenv{remark}{Remark}{mygray}
+
+% current overlay = normal; otherwise = gray
+\newcommand{\fadepast}[1]{\alt<.>{#1}{\textcolor{gray}{#1}}}
+\newcommand{\fadeat}[2]{\alt<#1>{#2}{\textcolor{gray}{#2}}}
+
+\newcommand{\disponslide}[2]{%
+  \alt<#1>{#2}{\phantom{#2}}}
+
+\begin{document}
+
+
+\NewDocumentEnvironment{mydef}{o m}{%
+  \par\medskip%
+  \noindent
+  \textbf{Definition~#2.}%            ← bold “Definition” and your number
+  \IfValueT{#1}{\ (\textit{#1}).}%    ← optional title in italics  
+  \quad
+}{%
+  \par\medskip
+}
+
+\NewDocumentEnvironment{mythm}{o m}{%
+  \par\medskip%
+  \noindent
+  \textbf{Theorem~#2.}%            ← bold “Theorem” and your number
+  \IfValueT{#1}{\ (\textit{#1}).}%    ← optional title in italics  
+  \quad
+}{%
+  \par\medskip
+}
+
+%% BEGIN WORKSHOPCDC19/BERKALTIN/SLIDES/TITLEPAGE-WELCOME_IFACWC20 %%
+%% BEGIN WORKSHOPCDC16/TITLEPAGE-DYNAMICPROPERTIES %%
+% !TEX TS-program = personallatex
+
+%Analysis of Interconnections of Hybrid Systems: an Input/Output Approach
+\title{}%Interconnections and Control of Hybrid Systems}
+\subtitle{\bf 
+Control of Uncertain Hybrid Systems
+\vspace{0.7in}}
+%Control and Interconnections of Hybrid Systems\vspace{0.7in}}
+%\subtitle{\Large of Hybrid Systems \vspace{1in}}
+\author{\vspace{-0.35in}
+\bf Carlos A. Montenegro G.}
+\institute{
+%\vspace{-0.05in}
+%$\star$ 
+University of California, Santa Cruz, USA\\
+%\vspace{0.1in}{\it Joint work with Andrew R. Teel and Rafal Goebel}
+%\\
+\vspace{0.05in}
+
+{
+\begin{center}
+
+-----
+\\
+\it Qualifying Exam for Advancement to PhD Candidacy
+\\
+\medskip
+August 11, 2025
+\\
+\medskip
+\tiny Committee: Gabriel H. Elkaim (UCSC), Ricardo G. Sanfelice (UCSC), Lars Lindemann (USC/ETH Zurich), Murat Arcak (UCB)
+\end{center}
+}
+
+%{\it \tiny Collaborators: A. R. Teel (UCSB), E. Frazzoli (MIT), R. Goebel (LUC), C. Prieur (LAAS), L. Praly (E. Mines)}
+}
+
+% Temporarily out
+%\addlogo{\ucsblogo}
+%\addlogo{\mitlogo}
+%\addlogo{\ensmplogo}
+
+% Use this line to get some text in the logo bar as well
+\logobartext{Montenegro G. - UCSC
+- \insertframenumber/\inserttotalframenumber
+%- \today\  
+%- \insertframenumber/\inserttotalframenumber\strut\quad
+}
+%\logobartext{}
+\setbluesheetcolors
+
+%\begin{figure}
+% \includegraphics[scale=0.14]{Clipart/Figures/MissileInterception} 
+% \caption{Iron Dome. Anas Baba/AFP/Getty Images
+%}
+%  \label{fig:IronD}
+% \end{figure}
+%
+%\begin{columns}[T]
+%\begin{column}{0.5\textwidth}
+%\end{column}
+%\begin{column}{0.5\textwidth}
+%\end{column}
+%\end{columns}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\input{Slides/
+% Intro - Motivation
+% \input{Slides/TitlePage}\setwhitesheetcolors 
+% \input{Slides/Introduction-Motivation}
+% \input{Slides/Introduction-UncertainSystems}
+% \input{Slides/Introduction-LearningCertificates}
+
+% % Prelims - Hybrid Systems
+% \input{Slides/Preliminaries-ModelingHybridDynamics}
+% \input{Slides/Preliminaries-HybridEquation}
+% \input{Slides/Preliminaries-HyConnections2Frameworks}
+
+% % Thrust 1 - Probabilistic Learning-Based Modelling and Control
+% {
+%   \setbeamertemplate{headline}{}
+%   \setbeamertemplate{footline}{}
+%   \setbeamertemplate{navigation symbols}{}
+%   \setbeamertemplate{background canvas}[default] % no theme bg image
+%   \setbeamercolor{background canvas}{bg=white}   % force pure white
+
+%   \begin{frame}[plain,noframenumbering]
+%     \vspace{2cm}
+%     \begin{minipage}[t][8cm][t]{\textwidth}
+%       $\boxed{\textup{\textbf{Thrust 1}: Probabilistic Learning-Based Modeling and Control}}$
+
+%       % \vspace{0.5cm}
+%       \only<1->{
+%         \[
+%           \begin{split}
+%                   &\calH_P \>:\> \left\{ 
+%               \begin{matrix}
+%               \hspace{0.2cm} \dot{x} \in \pno{F_P}(x,\pno{u_C}) := \left\{ f(x, \pno{u_C}) + \pno{d_C}(x, \pno{u_C})  \right\}
+%                 \quad & (x,\pno{u_C}) \in \pno{C_P}
+%               \\
+%               x^+ \in \pn{G_P}(x,\pn{u_D}) := \left\{ g(x, \pn{u_D}) + \pn{d_D}(x, \pn{u_D})  \right\}
+%               \quad & \hspace{0.15cm} (x,\pn{u_D}) \in \pn{D_P}
+%           \end{matrix}
+%           \right. 
+%           \end{split}
+%         \]
+
+
+%         The maps $\pno{d_C}$ and $\pn{d_D}$ are \textbf{unknown}.
+%       }
+
+%       \vspace{0.5cm}
+      
+%       {\small
+%         \only<2->{
+%           \textbf{Tasks}:
+%           \setbeamercovered{transparent}
+%           \begin{itemize}
+%             \item<3-> \fadeat{3}{Develop \textbf{multivariate GPs} to learn a surrogate $\widehat d_\star$.}
+%             \item<4-> \fadeat{4}{Design \textbf{probabilistic error bounds} for such GPs.}
+%             \item<5-> \fadeat{5}{Design of \textbf{stabilizing feedback laws}.}
+%           \end{itemize}
+%         }
+%       }
+%     \end{minipage}
+%   \end{frame}
+% }
+% \input{Slides/Preliminaries-IntroGPs}
+% \input{Slides/Preliminaries-GPsIntuition}
+% \input{Slides/Preliminaries-MVGPDefinition}
+% \input{Slides/Results-RegularityGP}
+% \input{Slides/Results-PosteriorGP}
+% \input{Slides/Results-ErrorBoundsGPs}
+% \input{Slides/Results-GPsSummary}
+% \input{Slides/FutureWork-GPs}
+
+
+% % Thrust 2 - Learning-Based Safety Control for Uncertain Hybrid Systems
+% {
+%   \setbeamertemplate{headline}{}
+%   \setbeamertemplate{footline}{}
+%   \setbeamertemplate{navigation symbols}{}
+%   \setbeamertemplate{background canvas}[default] % no theme bg image
+%   \setbeamercolor{background canvas}{bg=white}   % force pure white
+
+%   \begin{frame}[plain,noframenumbering]
+%     \vspace{0.2cm}
+%     \begin{minipage}[t][8cm][t]{\textwidth}
+%       $\boxed{\textup{\textbf{Thrust 2}: Learning-Based Safety Control for Uncertain Hybrid Systems}}$
+
+%       % \vspace{0.5cm}
+%       \only<1->{
+%         \[
+%           \begin{split}
+%                   &\calH_P \>:\> \left\{ 
+%               \begin{matrix}
+%               \hspace{0.2cm} \dot{x} \in \pno{F_P}(x,\pno{u_C}) %:= \left\{ f(x, \pno{u_C}) + \pno{d_C(x, \pno{u_C})}  \right\}
+%                 \quad & (x,\pno{u_C}) \in \pno{C_P}
+%               \\
+%               x^+ \in \pn{G_P}(x,\pn{u_D}) % := \left\{ g(x, u_C) + \pn{d_D(x, \pn{u_D})}  \right\}
+%               \quad & \hspace{0.15cm} (x,\pn{u_D}) \in \pn{D_P}
+%           \end{matrix}
+%           \right. 
+%           \end{split}
+%         \]
+%       }
+
+%       \vspace{0.2cm}
+      
+%       {\small
+%         \uncover<2->{
+%           \textbf{Tasks}:
+%           \setbeamercovered{transparent}
+%           \begin{itemize}
+%             \item<3-> \fadeat{3}{Design of \textbf{vector-valued CBFs} for hybrid inclusions.}
+%             \item<4-> \fadeat{4}{Study the \textbf{continuity} of \textbf{optimization-based controllers} using vector-valued CBFs.}
+%             \item<5-> \fadeat{5}{Study the \textbf{nominal robustness} under \textbf{discontinuous} safeguarding controllers.}
+%           \end{itemize}
+%         }
+%         \vspace{0.4cm}
+%       }
+
+%       {\footnotesize
+%         \only<6>{
+%           \textbf{Publications}:
+
+%           \begin{itemize}
+%             \item \textbf{C. A. Montenegro G.}, H. M. Sweatland, K. Currier, W. E. Dixon, and R. G. Sanfelice, ``\emph{Pointwise Optimal Feedback Laws for Hybrid Inclusions using Multiple Control Barrier Functions}," Proceedings of the IEEE Conference on Decision and Control, 2025.
+%           \end{itemize}
+%         }
+%       }
+%     \end{minipage}
+%   \end{frame}
+% }
+% \input{Slides/Introduction-mCBFsMotivation}
+% \input{Slides/Preliminaries-FpI}
+% \input{Slides/Preliminaries-pAS}
+% \input{Slides/Preliminaries-mBFs}
+% \input{Slides/Preliminaries-mCBFs}
+% \input{Slides/Results-FpI}
+% \input{Slides/Results-LpASmCBFs}
+% \input{Slides/Results-Continuity_PointwiseOptimalMaps}
+% \input{Slides/Results-RobustnessKrasovskii}
+% \input{Slides/Example-SimulationsmCBFs}
+% \input{Slides/FutureWork-mCBFs}
+
+
+% % Thrust 3 - Learning-Based Certificates for Asymptotic Stability, Cost Evaluation, and Invariance in Uncertain Hybrid Systems
+% {
+%   \setbeamertemplate{headline}{}
+%   \setbeamertemplate{footline}{}
+%   \setbeamertemplate{navigation symbols}{}
+%   \setbeamertemplate{background canvas}[default] % no theme bg image
+%   \setbeamercolor{background canvas}{bg=white}   % force pure white
+
+%   \begin{frame}[plain,noframenumbering]
+%     % \vspace{1cm}
+%     \begin{minipage}[t][8cm][t]{\textwidth}
+%       $\boxed{\textup{\textbf{Thrust 3}: Learning-Based Certificates for  Hybrid Systems}}$
+
+%       % \vspace{0.5cm}
+%       \only<1->{
+%         \[
+%           \begin{split}
+%                   &\mathcal{H} \>:\> \left\{ 
+%               \begin{matrix}
+%               \hspace{0.2cm} \dot{x} \in \pno{F}(x)
+%                 \quad & x \in \pno{C}
+%               \\
+%               x^+ \in \pn{G}(x)
+%               \quad & \hspace{0.15cm} x \in \pn{D}
+%           \end{matrix}
+%           \right. 
+%           \end{split}
+%         \]
+%       }
+
+%       \vspace{0.5cm}
+      
+%       {\small
+%         \only<2->{
+%           \textbf{Tasks}:
+%         \setbeamercovered{transparent}
+%         \begin{itemize}
+%           \item<3-> \fadeat{3}{Design a learning-based surrogate \textbf{Lyapunov function} for hybrid systems.}
+%           \item<4-> \fadeat{4}{Design learning-based surrogates to \textbf{upper bound} a \text{cost} for hybrid systems.}
+%           \item<5-> \fadeat{5}{Show that the learning-based \textbf{surrogate to upper bound the cost} is also a \textbf{Lyapunov} function.}
+%         \end{itemize}
+%         }
+%       }
+
+%       {\footnotesize
+%         \only<6>{
+
+%           \begin{tikzpicture}[remember picture,overlay]
+%                 \fill[white,opacity=.9] % or black,opacity=.30 to dim
+%                     (current page.south west) rectangle (current page.north east);
+
+%                     % % the box on top (centered)
+%                     \node[anchor=center, xshift=0cm, yshift=-2cm] at (current page.center){%
+%                     \begin{minipage}{0.9\paperwidth} % choose width
+%                         \textbf{Publications}:
+
+%                         \begin{itemize}
+%                           \item \textbf{C. A. Montenegro G.}, S. J. Leudo, and R. G. Sanfelice, “\emph{A Data-Driven Approach for Certifying Asymptotic Stability and Cost Evaluation for Hybrid Systems},” in Proceedings of the 27th ACM International Conference on Hybrid Systems: Computation and Control, 2024.
+%                           \item \textbf{C. A. Montenegro G.}, S. J. Leudo, and R. G. Sanfelice, “\emph{Learning Certificates for Asymptotic Stability and Cost Evaluation in Hybrid Dynamical Systems},” To appear in Nonlinear Analysis: Hybrid Systems, 2025.
+%                         \end{itemize}
+%                                   \end{minipage}%
+%                                   };
+%                           \end{tikzpicture}
+%         }
+%       }
+%     \end{minipage}
+%   \end{frame}
+% }
+% \input{Slides/Results-LyapunovNN}
+% \input{Slides/Preliminaries-EpsilonNets}
+% \input{Slides/Introduction-MotivationOptimizationLyapunov}
+% \input{Slides/Results-ExtendingLyapCondfromSamples_Main}
+
+% % Prelims - Motivation Inverse Optimality
+% \input{Slides/Introduction-MotivationInverseOptimality}
+
+% % Outline
+% \input{Slides/Introduction-Outline}
+
+% % ISSf for Hybrid Systems
+% \input{Slides/Preliminaries-ISSfDefinition}
+% \input{Slides/Preliminaries-ISSfBF}
+% \input{Slides/Results-ISSfUsingBF}
+% \input{Slides/Introduction-ProblemStatement}
+% \input{Slides/Results-ISSfCBFs}
+
+% % % Inverse optimality
+% % \input{Slides/Introduction-ZeroSumHybridGame}
+% \input{Slides/Results-IO_SafetyFilters}
+
+% % Numerical Example
+% \input{Slides/Example-OscillatorWImpacts}
+
+% % Funding
+% \input{Slides/Funding}
+
+% \begin{frame}{\bf Acknowledgements}
+%     This research has been partially supported by
+%     \begin{itemize}
+%         \item the National Science Foundation under Grant no. CNS-2039054 and Grant no. CNS-2111688,
+%         \item the Air Force Office of Scientific Research under Grant no. FA9550-19-1-0169, Grant no. FA9550-20-1-0238, Grant no. FA9550-23-1-0145, and Grant no. FA9550-23-1-0313,
+%         \item the Air Force Research Laboratory under Grant no. FA8651-22-1-0017 and Grant no. FA8651-23-1-0004,
+%         \item the Army Research Office under Grant no. W911NF-20-1-0253,
+%         \item and the Department of Defense Grant no. W911NF-23-1-0158.
+%     \end{itemize}
+% \end{frame}
+
+
+\end{document}
